@@ -16,7 +16,7 @@ except ImportError:
     LLAMA_INDEX_AVAILABLE = False
 
 # Alternative document processing without LlamaIndex
-import PyPDF2
+#import PyPDF2
 import docx
 from io import BytesIO
 
