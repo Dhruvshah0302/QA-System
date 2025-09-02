@@ -3,6 +3,7 @@ import sys
 from exception import customexception
 from logger import logging
 
+
 def load_data(data):
     """
     Load PDF documents from a specified directory.
