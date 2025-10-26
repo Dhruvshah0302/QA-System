@@ -7,5 +7,5 @@ IPython
 llama-index-embeddings-gemini
 streamlit
 python-docx
-from pypdf import PdfReader
+
 
