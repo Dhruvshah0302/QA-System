@@ -16,14 +16,15 @@ except ImportError:
     LLAMA_INDEX_AVAILABLE = False
 
 # Alternative document processing without LlamaIndex
-import PyPDF2  # Uncommented this line
+from pypdf import PdfReader
+  # Uncommented this line
 import docx
 from io import BytesIO
 
 def extract_text_from_pdf(file):
     """Extract text from PDF file"""
     try:
-        pdf_reader = PyPDF2.PdfReader(file)
+        pdf_reader = PdfReader(file)
         text = ""
         for page in pdf_reader.pages:
             text += page.extract_text() + "\n"

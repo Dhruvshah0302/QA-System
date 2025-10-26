@@ -1,4 +1,4 @@
-#!C:\Users\Dhruv\Desktop\QA_System\venv\python.exe
+#!C:\Users\Dhruv\Desktop\QA_System\venv\Scripts\python.exe
 import argparse
 import sys
 
