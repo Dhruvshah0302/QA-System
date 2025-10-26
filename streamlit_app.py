@@ -13,6 +13,7 @@ logging.basicConfig(level=logging.INFO)
 
 # Load .env file from current directory
 load_dotenv()
+print(f"DEBUG: API Key loaded: {os.getenv('GOOGLE_API_KEY')[:10]}..." if os.getenv('GOOGLE_API_KEY') else "DEBUG: No API Key found!")
 
 # Try to import LlamaIndex
 try:
