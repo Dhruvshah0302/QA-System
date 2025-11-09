@@ -11,9 +11,20 @@ warnings.filterwarnings('ignore', category=DeprecationWarning)
 # Set up basic logging
 logging.basicConfig(level=logging.INFO)
 
-# Load .env file from current directory
-load_dotenv()
-print(f"DEBUG: API Key loaded: {os.getenv('GOOGLE_API_KEY')[:10]}..." if os.getenv('GOOGLE_API_KEY') else "DEBUG: No API Key found!")
+# ============= FIX: Load .env file with explicit path =============
+# Get the directory where this script is located
+current_dir = Path(__file__).parent.absolute()
+env_path = current_dir / '.env'
+
+# Load the .env file
+if env_path.exists():
+    load_dotenv(dotenv_path=env_path)
+    logging.info(f"✅ Loading .env from: {env_path}")
+else:
+    logging.warning(f"⚠️ .env file not found at: {env_path}")
+    # Try loading from current working directory as fallback
+    load_dotenv()
+# ==================================================================
 
 # Try to import LlamaIndex
 try:
@@ -101,7 +112,7 @@ def create_index_from_text(text, api_key):
         # Configure Gemini
         genai.configure(api_key=api_key)
         
-        # Set up Settings with Gemini - exactly like your notebook
+        # Set up Settings with Gemini
         Settings.llm = Gemini(model="gemini-2.5-flash", api_key=api_key)
         Settings.embed_model = GeminiEmbedding(model_name="models/text-embedding-004", api_key=api_key)
         Settings.node_parser = SentenceSplitter(chunk_size=800, chunk_overlap=20)
@@ -157,14 +168,28 @@ def simple_qa_system(document_text, question):
 
 def main():
     st.set_page_config(page_title="QA System", page_icon="🤖", layout="wide")
-    st.title("🤖 QA with Documents (Gemini-Powered)")
+    st.title("🤖 Question And Answer with Documents (Powered by Gemini)")
+    st.write("This QA system uses Google's Gemini LLM for intelligent document Q&A.")
     
     # Sidebar for API Key and Info
     with st.sidebar:
         st.header("⚙️ Configuration")
         
-        # Try to get API key from .env
+        # ============= IMPROVED: Better API Key Detection =============
+        # Try to get API key from environment
         api_key_from_env = os.getenv("GOOGLE_API_KEY")
+        
+        # Debug information
+        with st.expander("🔍 Debug Info"):
+            st.code(f"Script location: {Path(__file__).parent.absolute()}")
+            st.code(f".env path: {env_path}")
+            st.code(f".env exists: {env_path.exists()}")
+            st.code(f"Working dir: {os.getcwd()}")
+            if api_key_from_env:
+                st.code(f"API Key found: {api_key_from_env[:10]}...{api_key_from_env[-4:]}")
+            else:
+                st.code("API Key: Not found in environment")
+        # ==============================================================
         
         if api_key_from_env:
             st.success("✅ API Key loaded from .env file")
@@ -176,9 +201,9 @@ def main():
             st.warning("⚠️ No API Key found in .env file")
             api_key = st.text_input("Google API Key", type="password", help="Enter your Google API key")
             
-        st.markdown("---")
-        st.header("ℹ️ About")
-        st.write("This QA system uses Google's Gemini LLM for intelligent document Q&A.")
+        #st.markdown("---")
+        #st.header("ℹ️ About")
+        #st.write("This QA system uses Google's Gemini LLM for intelligent document Q&A.")
         
         st.header("🔧 Features")
         st.write("✓ PDF, TXT, DOCX support")
@@ -189,10 +214,6 @@ def main():
         st.markdown("---")
         st.header("🔑 Get API Key")
         st.markdown("[Get Google API Key →](https://makersuite.google.com/app/apikey)")
-        
-        st.markdown("---")
-        st.header("📂 Current Directory")
-        st.code(os.getcwd())
     
     # Display status
     col1, col2 = st.columns(2)
