@@ -205,29 +205,16 @@ def main():
         #st.header("ℹ️ About")
         #st.write("This QA system uses Google's Gemini LLM for intelligent document Q&A.")
         
-        st.header("🔧 Features")
-        st.write("✓ PDF, TXT, DOCX support")
-        st.write("✓ Gemini 2.5 Flash LLM")
-        st.write("✓ Semantic search")
-        st.write("✓ Document statistics")
+        #st.header("🔧 Features")
+        #st.write("✓ PDF, TXT, DOCX support")
+        #st.write("✓ Gemini 2.5 Flash LLM")
+        #st.write("✓ Semantic search")
+        #st.write("✓ Document statistics")
         
         st.markdown("---")
         st.header("🔑 Get API Key")
         st.markdown("[Get Google API Key →](https://makersuite.google.com/app/apikey)")
     
-    # Display status
-    col1, col2 = st.columns(2)
-    with col1:
-        if LLAMA_INDEX_AVAILABLE:
-            st.success("✅ LlamaIndex Available")
-        else:
-            st.error("❌ LlamaIndex Not Available")
-    
-    with col2:
-        if api_key:
-            st.success("✅ API Key Configured")
-        else:
-            st.warning("⚠️ No API Key")
     
     # Initialize session state
     if 'document_text' not in st.session_state:
@@ -295,7 +282,7 @@ def main():
             st.warning("⚠️ **Mode:** Basic keyword matching (add API key for better results)")
         
         # Question input
-        question = st.text_input("💭 Your question:", placeholder="e.g., What is machine learning?")
+        question = st.text_input(placeholder="e.g., What is machine learning?")
         
         col1, col2 = st.columns([1, 5])
         with col1:
