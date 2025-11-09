@@ -282,7 +282,7 @@ def main():
             st.warning("⚠️ **Mode:** Basic keyword matching (add API key for better results)")
         
         # Question input
-        question = st.text_input(placeholder="e.g., What is machine learning?")
+        question = st.text_input("Question",placeholder="e.g., What is machine learning?")
         
         col1, col2 = st.columns([1, 5])
         with col1:
